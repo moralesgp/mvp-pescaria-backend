@@ -15,6 +15,7 @@ e permitir o registro de relatos de pescarias.
 - SQLite
 - Swagger / OpenAPI
 - brModelo (projeto Conceitual e Lógico mais código ref p/ modelo físico)
+- DB Browser for SQLite
 
 ## Modelagem do Banco de Dados
 
