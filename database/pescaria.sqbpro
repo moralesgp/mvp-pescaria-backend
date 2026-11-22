@@ -1,72 +1,50 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="pescaria.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1592"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Peixe" custom_title="0" dock_id="2" table="4,5:mainPeixe"/><dock_state state="000000ff00000000fd00000001000000020000000000000000fc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000ffffffff0000010100ffffff000000000000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">
-INSERT INTO Peixe (
-    nome_peixe,
-    tipo_agua,
-    regiao,
-    isca_natural,
-    dicas,
-    descricao,
-    isca_artificial
-)
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="pescaria.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="1592"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="Pescaria" custom_title="0" dock_id="2" table="4,8:mainPescaria"/><dock_state state="000000ff00000000fd0000000100000002000006b40000036afc0100000002fb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000006b40000010100ffffff000002940000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings><table schema="main" name="Peixe" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="63"/><column index="2" value="87"/><column index="3" value="90"/><column index="4" value="222"/><column index="5" value="175"/><column index="6" value="239"/><column index="7" value="256"/><column index="8" value="226"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table><table schema="main" name="Pescaria" show_row_id="0" encoding="" plot_x_axis="" unlock_view_pk="_rowid_" freeze_columns="0"><sort/><column_widths><column index="1" value="84"/><column index="2" value="113"/><column index="3" value="138"/><column index="4" value="68"/><column index="5" value="136"/><column index="6" value="221"/><column index="7" value="65"/></column_widths><filter_values/><conditional_formats/><row_id_formats/><display_formats/><hidden_columns/><plot_y_axes/><global_filter/></table></browse_table_settings></tab_browse><tab_sql><sql name="SQL 3*">INSERT INTO Pescaria
+(nome_pescador, isca_utilizada, data, local,
+ observacao, id_peixe)
 VALUES
 (
-    'Dourado',
-    'Doce',
-    'Rios das bacias do Paraná e Paraguai',
-    'Tuvira, lambari e curimbatá',
-    'Explorar corredeiras e estruturas submersas.',
-    'Peixe predador, forte e conhecido pelos saltos.',
-    'Iscas de meia-água, superfície e colheres'
+    'Carlos',
+    'Tuvira',
+    '2026-10-15',
+    'Rio Paraná',
+    'Dourado capturado próximo às corredeiras.',
+    (SELECT id_peixe FROM Peixe
+     WHERE nome_peixe = 'Dourado')
 ),
 (
-    'Pacu',
-    'Doce',
-    'Pantanal e bacia do rio Paraguai',
-    'Milho, massa, goiaba e coquinho',
-    'Pescar próximo a árvores e margens vegetadas.',
-    'Peixe de corpo arredondado e alimentação variada.',
-    'Iscas artificiais pequenas de superfície'
+    'Marcos',
+    'Isca artificial de superfície',
+    '2026-10-20',
+    'Represa de Serra da Mesa',
+    'Tucunaré capturado durante a manhã.',
+    (SELECT id_peixe FROM Peixe
+     WHERE nome_peixe = 'Tucunaré')
 ),
 (
-    'Pintado',
-    'Doce',
-    'Bacias do Paraná e Paraguai',
-    'Tuvira, muçum e lambari',
-    'Procurar poços e canais profundos.',
-    'Peixe de couro com manchas escuras pelo corpo.',
-    'Iscas artificiais de profundidade'
+    'Ana',
+    'Milho',
+    '2026-11-02',
+    'Rio Paraná',
+    'Pacu capturado próximo à vegetação.',
+    (SELECT id_peixe FROM Peixe
+     WHERE nome_peixe = 'Pacu')
 ),
 (
-    'Tucunaré',
-    'Doce',
-    'Bacia Amazônica e reservatórios brasileiros',
-    'Lambari, piaba e pequenos acarás',
-    'Explorar galhadas, pedras e estruturas.',
-    'Peixe territorialista e predador de emboscada.',
-    'Iscas de superfície, meia-água e soft baits'
-),
-(
-    'Traíra',
-    'Doce',
-    'Rios, lagos e represas do Brasil',
-    'Lambari, tuvira e pequenos peixes',
-    'Procurar locais com vegetação aquática.',
-    'Peixe predador com dentes afiados.',
-    'Frogs, soft baits e iscas de superfície'
-),
-(
-    'Robalo-flecha',
-    'Salgada/Salobra',
-    'Estuários e regiões costeiras do Brasil',
-    'Camarão, sardinha e manjuba',
-    'Observar as marés e explorar estruturas.',
-    'Peixe costeiro que frequenta também estuários.',
-    'Camarão artificial, plugs e iscas de superfície'
-);
-</sql><sql name="SQL 2">SELECT
-    id_peixe,
-    nome_peixe,
-    isca_natural,
-    isca_artificial
-FROM Peixe
-ORDER BY id_peixe;</sql><current_tab id="1"/></tab_sql></sqlb_project>
+    'Pedro',
+    'Tuvira',
+    '2026-11-10',
+    'Rio Paraná',
+    'Segundo relato de pescaria de Dourado.',
+    (SELECT id_peixe FROM Peixe
+     WHERE nome_peixe = 'Dourado')
+);</sql><sql name="SQL 4*">SELECT
+    Pescaria.id_pescaria,
+    Peixe.nome_peixe,
+    Pescaria.nome_pescador,
+    Pescaria.data,
+    Pescaria.local,
+    Pescaria.isca_utilizada
+FROM Pescaria
+JOIN Peixe
+    ON Pescaria.id_peixe = Peixe.id_peixe
+ORDER BY Pescaria.id_pescaria;</sql><current_tab id="1"/></tab_sql></sqlb_project>
