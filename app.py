@@ -5,9 +5,28 @@ import sqlite3
 from pathlib import Path
 
 from flask import Flask, jsonify, request
+from flask_swagger_ui import get_swaggerui_blueprint
+
+
 
 
 app = Flask(__name__)
+
+# Configuração do Swagger UI
+SWAGGER_URL = "/swagger"
+API_URL = "/static/swagger.json"
+
+swagger_blueprint = get_swaggerui_blueprint(
+    SWAGGER_URL,
+    API_URL,
+    config={"app_name": "Guia do Pescador"}
+)
+
+app.register_blueprint(
+    swagger_blueprint,
+    url_prefix=SWAGGER_URL
+)
+
 
 # Localiza o banco SQLite dentro do projeto.
 BASE_DIR = Path(__file__).resolve().parent
