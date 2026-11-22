@@ -82,5 +82,73 @@ def listar_pescarias(id_peixe):
         conexao.close()
 
 
+@app.post("/pescarias")
+def cadastrar_pescaria():
+    """Cadastra um novo relato de pescaria."""
+    dados = request.get_json(silent=True)
+
+    if not isinstance(dados, dict):
+        return jsonify({"erro": "JSON inválido"}), 400
+
+    obrigatorios = [
+        "id_peixe",
+        "nome_pescador",
+        "isca_utilizada",
+        "data",
+        "local"
+    ]
+
+    for campo in obrigatorios:
+        if dados.get(campo) is None or dados[campo] == "":
+            return jsonify({
+                "erro": f"Campo obrigatório: {campo}"
+            }), 400
+
+    conexao = sqlite3.connect(DB_PATH)
+
+    try:
+        cursor = conexao.execute(
+            "SELECT id_peixe FROM Peixe WHERE id_peixe = ?",
+            (dados["id_peixe"],)
+        )
+
+        if cursor.fetchone() is None:
+            return jsonify({
+                "erro": "Peixe não encontrado"
+            }), 404
+
+        sql = """
+            INSERT INTO Pescaria (
+                nome_pescador,
+                isca_utilizada,
+                data,
+                local,
+                observacao,
+                id_peixe
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
+        """
+
+        valores = (
+            dados["nome_pescador"],
+            dados["isca_utilizada"],
+            dados["data"],
+            dados["local"],
+            dados.get("observacao"),
+            dados["id_peixe"]
+        )
+
+        cursor = conexao.execute(sql, valores)
+        conexao.commit()
+
+        return jsonify({
+            "mensagem": "Pescaria cadastrada com sucesso",
+            "id_pescaria": cursor.lastrowid
+        }), 201
+
+    finally:
+        conexao.close()
+
+
 if __name__ == "__main__":
     app.run(debug=True)
