@@ -11,5 +11,233 @@
       "url": "http://127.0.0.1:5000"
     }
   ],
-  "paths": {}
+  "paths": {
+    "/peixes": {
+      "get": {
+        "summary": "Listar peixes",
+        "description": "Retorna os peixes cadastrados.",
+        "responses": {
+          "200": {
+            "description": "Consulta realizada com sucesso"
+          }
+        }
+      }
+    },
+    "/peixes/{id_peixe}": {
+      "get": {
+        "summary": "Detalhar peixe",
+        "description": "Retorna os dados de um peixe pelo ID.",
+        "parameters": [
+          {
+            "name": "id_peixe",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Identificador do peixe"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Peixe encontrado com sucesso"
+          },
+          "404": {
+            "description": "Peixe não encontrado"
+          }
+        }
+      }
+    },
+    "/peixes/{id_peixe}/pescarias": {
+      "get": {
+        "summary": "Listar pescarias de um peixe",
+        "description": "Retorna os relatos de pescaria de um peixe, ordenados pela data mais recente.",
+        "parameters": [
+          {
+            "name": "id_peixe",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Identificador do peixe"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de pescarias retornada com sucesso. Pode estar vazia.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id_pescaria": {
+                        "type": "integer"
+                      },
+                      "id_peixe": {
+                        "type": "integer"
+                      },
+                      "nome_pescador": {
+                        "type": "string"
+                      },
+                      "isca_utilizada": {
+                        "type": "string"
+                      },
+                      "data": {
+                        "type": "string",
+                        "format": "date"
+                      },
+                      "local": {
+                        "type": "string"
+                      },
+                      "observacao": {
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/pescarias": {
+      "post": {
+        "summary": "Cadastrar pescaria",
+        "description": "Cadastra um novo relato de pescaria associado a um peixe.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "id_peixe",
+                  "nome_pescador",
+                  "isca_utilizada",
+                  "data",
+                  "local"
+                ],
+                "properties": {
+                  "id_peixe": {
+                    "type": "integer"
+                  },
+                  "nome_pescador": {
+                    "type": "string"
+                  },
+                  "isca_utilizada": {
+                    "type": "string"
+                  },
+                  "data": {
+                    "type": "string",
+                    "format": "date"
+                  },
+                  "local": {
+                    "type": "string"
+                  },
+                  "observacao": {
+                    "type": "string",
+                    "nullable": true
+                  }
+                }
+              },
+              "example": {
+                "id_peixe": 1,
+                "nome_pescador": "Teste Swagger",
+                "isca_utilizada": "Tuvira",
+                "data": "2026-11-22",
+                "local": "Rio Parana",
+                "observacao": "Relato cadastrado pelo Swagger UI."
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pescaria cadastrada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensagem": {
+                      "type": "string"
+                    },
+                    "id_pescaria": {
+                      "type": "integer"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "JSON inválido ou campo obrigatório ausente"
+          },
+          "404": {
+            "description": "Peixe não encontrado"
+          }
+        }
+      }
+    },
+    "/pescarias/{id_pescaria}": {
+      "delete": {
+        "summary": "Excluir pescaria",
+        "description": "Exclui um relato de pescaria pelo ID.",
+        "parameters": [
+          {
+            "name": "id_pescaria",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Identificador da pescaria a excluir"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Pescaria excluída com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "mensagem": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "mensagem": "Pescaria excluída com sucesso"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Pescaria não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "erro": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "erro": "Pescaria não encontrada"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
 }
