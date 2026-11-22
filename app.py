@@ -150,5 +150,29 @@ def cadastrar_pescaria():
         conexao.close()
 
 
+@app.delete("/pescarias/<int:id_pescaria>")
+def excluir_pescaria(id_pescaria):
+    """Exclui um relato de pescaria pelo ID."""
+    conexao = sqlite3.connect(DB_PATH)
+
+    try:
+        sql = "DELETE FROM Pescaria WHERE id_pescaria = ?"
+        cursor = conexao.execute(sql, (id_pescaria,))
+
+        if cursor.rowcount == 0:
+            return jsonify({
+                "erro": "Pescaria não encontrada"
+            }), 404
+
+        conexao.commit()
+
+        return jsonify({
+            "mensagem": "Pescaria excluída com sucesso"
+        }), 200
+
+    finally:
+        conexao.close()
+
+
 if __name__ == "__main__":
     app.run(debug=True)
