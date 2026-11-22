@@ -60,5 +60,27 @@ def detalhar_peixe(id_peixe):
         conexao.close()
 
 
+@app.get("/peixes/<int:id_peixe>/pescarias")
+def listar_pescarias(id_peixe):
+    """Lista os relatos de pescaria de um peixe."""
+    conexao = sqlite3.connect(DB_PATH)
+    conexao.row_factory = sqlite3.Row
+
+    try:
+        sql = """
+            SELECT *
+            FROM Pescaria
+            WHERE id_peixe = ?
+            ORDER BY data DESC
+        """
+        cursor = conexao.execute(sql, (id_peixe,))
+        pescarias = cursor.fetchall()
+
+        return jsonify([dict(p) for p in pescarias]), 200
+
+    finally:
+        conexao.close()
+
+
 if __name__ == "__main__":
     app.run(debug=True)
