@@ -40,6 +40,25 @@ def listar_peixes():
     finally:
         conexao.close()
 
+@app.get("/peixes/<int:id_peixe>")
+def detalhar_peixe(id_peixe):
+    """Consulta os detalhes de um peixe pelo ID."""
+    conexao = sqlite3.connect(DB_PATH)
+    conexao.row_factory = sqlite3.Row
+
+    try:
+        sql = "SELECT * FROM Peixe WHERE id_peixe = ?"
+        cursor = conexao.execute(sql, (id_peixe,))
+        peixe = cursor.fetchone()
+
+        if peixe is None:
+            return jsonify({"erro": "Peixe não encontrado"}), 404
+
+        return jsonify(dict(peixe)), 200
+
+    finally:
+        conexao.close()
+
 
 if __name__ == "__main__":
     app.run(debug=True)
