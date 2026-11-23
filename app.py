@@ -5,12 +5,15 @@ import sqlite3
 from pathlib import Path
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 
 
 
 
 app = Flask(__name__)
+# Permite que o frontend acesse a API.
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Configuração do Swagger UI
 SWAGGER_URL = "/swagger"
