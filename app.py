@@ -36,13 +36,21 @@ BASE_DIR = Path(__file__).resolve().parent
 DB_PATH = BASE_DIR / "database" / "pescaria.db"
 
 
+def conectar_banco():
+    """Abre conexão com o banco e ativa as chaves estrangeiras."""
+    conexao = sqlite3.connect(DB_PATH)
+    conexao.row_factory = sqlite3.Row
+    conexao.execute("PRAGMA foreign_keys = ON")
+    return conexao
+
+
+
 @app.get("/peixes")
 def listar_peixes():
     """Lista os peixes e permite buscar pelo nome."""
     nome = request.args.get("nome", "").strip()
 
-    conexao = sqlite3.connect(DB_PATH)
-    conexao.row_factory = sqlite3.Row
+    conexao = conectar_banco()
 
     try:
         sql = "SELECT * FROM Peixe"
@@ -65,8 +73,7 @@ def listar_peixes():
 @app.get("/peixes/<int:id_peixe>")
 def detalhar_peixe(id_peixe):
     """Consulta os detalhes de um peixe pelo ID."""
-    conexao = sqlite3.connect(DB_PATH)
-    conexao.row_factory = sqlite3.Row
+    conexao = conectar_banco()
 
     try:
         sql = "SELECT * FROM Peixe WHERE id_peixe = ?"
@@ -85,8 +92,7 @@ def detalhar_peixe(id_peixe):
 @app.get("/peixes/<int:id_peixe>/pescarias")
 def listar_pescarias(id_peixe):
     """Lista os relatos de pescaria de um peixe."""
-    conexao = sqlite3.connect(DB_PATH)
-    conexao.row_factory = sqlite3.Row
+    conexao = conectar_banco()
 
     try:
         sql = """
@@ -126,7 +132,7 @@ def cadastrar_pescaria():
                 "erro": f"Campo obrigatório: {campo}"
             }), 400
 
-    conexao = sqlite3.connect(DB_PATH)
+    conexao = conectar_banco()
 
     try:
         cursor = conexao.execute(
@@ -175,7 +181,7 @@ def cadastrar_pescaria():
 @app.delete("/pescarias/<int:id_pescaria>")
 def excluir_pescaria(id_pescaria):
     """Exclui um relato de pescaria pelo ID."""
-    conexao = sqlite3.connect(DB_PATH)
+    conexao = conectar_banco()
 
     try:
         sql = "DELETE FROM Pescaria WHERE id_pescaria = ?"
